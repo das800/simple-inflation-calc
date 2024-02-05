@@ -19,7 +19,7 @@ def valid_date(s):
         msg = f"Not a valid date: '{s}'. Expected format: YYYY-MM"
         raise argparse.ArgumentTypeError(msg)
 
-parser = argparse.ArgumentParser(description='Process start and end months.')
+parser = argparse.ArgumentParser()
 parser.add_argument('-e', '--end', help='end month of whole time range in YYYY-MM format, current month by default', type=valid_date, default=datetime.datetime.now().strftime("%Y-%m"))
 parser.add_argument('-s', '--start', help='start month of whole time range in YYYY-MM format, a year before end by default', type=valid_date, default=None)
 parser.add_argument('-m', '--money', help='the monetary amount to index by inflation', type=float, default=None)
@@ -53,8 +53,6 @@ def get_us_cpi(start_month, end_month):
 	(output, error) = process.communicate()
 
 	response_js = json.loads(output.decode())
-
-	print(json.dumps(response_js, indent=4))
 
 	cpi_data = []
 	for month_data in response_js['Results']['series'][0]['data']: #only 1 series was requested above (CWSR0000SA0)
